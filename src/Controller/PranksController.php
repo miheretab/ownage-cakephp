@@ -21,18 +21,21 @@ class PranksController extends AppController
     {
         $slugFilter = [];
         $slug = $this->request->query('slug');
+        $keyword = $this->request->query('keyword');
 
         if ($slug) {
-            $this->paginate = [
-                'finder' => [
-                    'categories' => [
-                        'slug' => $slug
-                    ]
+            $this->paginate['finder'] = [
+                'categories' => [
+                    'slug' => $slug
                 ]
             ];
         }
 
-
+        if ($keyword) {
+            $this->paginate['conditions'] = [
+                'title LIKE ' => '%' . $keyword . '%'
+            ];
+        }
 
         $this->loadModel('AppPrankScripts');
         $pranks = $this->paginate($this->AppPrankScripts);
