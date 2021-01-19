@@ -99,4 +99,5 @@ Router::scope('/', function (RouteBuilder $routes) {
 Router::scope('/api', function (RouteBuilder $routes) {
     $routes->setExtensions(['json']);
     $routes->resources('Categories');
+    $routes->resources('Pranks');
 });
