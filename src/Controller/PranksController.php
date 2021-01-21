@@ -23,12 +23,15 @@ class PranksController extends AppController
         $slug = $this->request->query('slug');
         $keyword = $this->request->query('keyword');
 
+        $category = null;
         if ($slug) {
             $this->paginate['finder'] = [
                 'categories' => [
                     'slug' => $slug
                 ]
             ];
+            $this->loadModel('AppCategories');
+            $category = $this->AppCategories->find('all', ['conditions' => ['slug' => $slug]])->first();
         }
 
         if ($keyword) {
@@ -41,8 +44,9 @@ class PranksController extends AppController
         $pranks = $this->paginate($this->AppPrankScripts);
 
         $this->set([
+            'category' => $category,
             'pranks' => $pranks,
-            '_serialize' => ['pranks']
+            '_serialize' => ['category', 'pranks']
         ]);
     }
 

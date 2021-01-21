@@ -19,6 +19,15 @@ class CategoriesController extends AppController
     public function index()
     {
         $this->loadModel('AppCategories');
+
+        $slugs = $this->request->query('slugs');
+
+        if ($slugs) {
+            $this->paginate['conditions'] = [
+                'slug IN' => explode(",", $slugs)
+            ];
+        }
+
         $categories = $this->paginate($this->AppCategories);
 
         $this->set([
